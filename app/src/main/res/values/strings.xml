@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">TenantManager</string>
+    <string name="action_settings">Settings</string>
+    <string name="switch_str">Switch</string>
+    <string name="estate_list">List of Estates</string>
+    <string name="estate_details">Details of Estate</string>
+    <string name="tenant_details">Tenant Details</string>
+    <string name="welcome">Welcome to My Movie DVD Collection List on Sale</string>
+    <string name="discount">Buy All times and get a nice 20% discount!</string>
+    <string name="add_cart">Add to Shopping Cart</string>
+    <string name="checkout">Check Out</string>
+    <string name="details">Movie Description</string>
+    <string name="thanks">Thank You for shopping with us! These are your items</string>
+    <string name="detail_title">Details</string>
+
+    <!-- Confirmation dialog -->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="dialog_changes_message">You are about to commit changes. Continue?</string>
+    <string name="dialog_changes_title">Confirmation.</string>
+
+</resources>
