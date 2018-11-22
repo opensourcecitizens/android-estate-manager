@@ -7,9 +7,10 @@ public interface AppDAOInterface {
 
     enum EstateTblDescription{
 
-        KEY_ID("id","INTEGER"),
+        KEY_ID("id","TEXT"),
         KEY_NAME("name","TEXT"),
         ADDRESS("address","TEXT"),
+        CONTACTS("contacts","TEXT"),
         DESCRIPTION("description","TEXT"),
         TYPE("type","TEXT");
 
@@ -24,8 +25,8 @@ public interface AppDAOInterface {
 
     enum TenantTblDescription{
 
-        KEY_ID("id","INTEGER"),
-        KEY_ESTATE_ID("estateid","INTEGER"),
+        KEY_ID("id","TEXT"),
+        KEY_ESTATE_ID("estateid","TEXT"),
         KEY_NAME("name","TEXT"),
         DESCRIPTION("description","TEXT"),
         BLDG_NUMBER("number","TEXT"),
@@ -47,6 +48,8 @@ public interface AppDAOInterface {
     public AppDAO open()throws SQLException;
 
     public EstateModel getEstateById(String id);
+
+    public TenantModel getTenantById(String id);
 
     public List<EstateModel> getMyEstateList();
 
