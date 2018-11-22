@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 //import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.widget.ListView;
 import android.view.View;
 import android.widget.TextView;
@@ -22,6 +23,8 @@ import io.mtini.model.EstateModel;
 import io.mtini.model.TenantModel;
 
 public class TenantListFragment extends ListFragment {
+
+    public static String TAG = Class.class.getSimpleName();
 
     OnTenantSelectedListener mCallback;
 
@@ -46,7 +49,7 @@ public class TenantListFragment extends ListFragment {
         try {
             dbHelper.open();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.e(TAG,e.getMessage());
         }
 
         //get data object passed by previous activity
@@ -70,13 +73,13 @@ public class TenantListFragment extends ListFragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        TenantModel tag = (TenantModel)v.getTag();
+                        TenantModel tenant = (TenantModel)v.getTag();
 
-                        Snackbar.make(v, "Selected "+tag.getName()+" Details", Snackbar.LENGTH_LONG)
+                        Snackbar.make(v, "Selected "+tenant.getName()+" Details", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
 
 
-                        ((TenantListFragment.OnTenantSelectedListener)getActivity()) .onTenantSelected(tag);
+                        ((TenantListFragment.OnTenantSelectedListener)getActivity()) .onTenantSelected(tenant);
 
                     }
                 });
@@ -106,6 +109,7 @@ public class TenantListFragment extends ListFragment {
         try {
             mCallback = (OnTenantSelectedListener) activity;
         } catch (ClassCastException e) {
+            Log.e(TAG,e.getMessage());
             throw new ClassCastException(activity.toString()
                     + " must implement OnTenantSelectedListener");
         }

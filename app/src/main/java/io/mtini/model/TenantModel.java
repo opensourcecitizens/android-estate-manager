@@ -1,39 +1,21 @@
 package io.mtini.model;
 
-import android.app.DatePickerDialog;
-import android.content.ClipData;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.databinding.BindingAdapter;
-import android.databinding.BindingMethod;
-import android.databinding.InverseBindingAdapter;
-import android.databinding.InverseBindingListener;
-import android.databinding.InverseMethod;
-import android.nfc.Tag;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Pair;
-import android.view.View;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
-import io.mtini.android.adaptor.DatePickerBindingAdapter;
 import io.mtini.android.tenantmanager.BR;
-import io.mtini.android.tenantmanager.R;
 
 public class TenantModel extends BaseObservable implements Serializable,Cloneable{
 
     public static enum STATUS {
-        paid,late,balance,evicted;
+        paid,late,balance,evicted,new_tenant;
         static STATUS getStatus(String s){
             switch(s) {
                 case "paid":
@@ -44,14 +26,16 @@ public class TenantModel extends BaseObservable implements Serializable,Cloneabl
                     return balance;
                 case "evicted":
                     return evicted;
+                case "new_tenant":
+                    return new_tenant;
             }
             return null;};
     };
 
 
 
-    int id;
-    int estateId;
+    UUID id;
+    UUID estateId;
     String name;
     String buildingNumber;
     String description;
@@ -61,7 +45,7 @@ public class TenantModel extends BaseObservable implements Serializable,Cloneabl
     BigDecimal balance;
     String contacts;
 
-    public TenantModel(int id, int estateId, String name, String buildingNumber, String description, Date rentDueDate, STATUS status, BigDecimal rent, BigDecimal balance, String contacts) {
+    public TenantModel(UUID id, UUID estateId, String name, String buildingNumber, String description, Date rentDueDate, STATUS status, BigDecimal rent, BigDecimal balance, String contacts) {
         this.id = id;
         this.estateId=estateId;
         this.name = name;
@@ -75,7 +59,7 @@ public class TenantModel extends BaseObservable implements Serializable,Cloneabl
     }
 
 
-    public TenantModel(int id, String name, String buildingNumber, String description, Date rentDueDate, STATUS status, BigDecimal rent, BigDecimal balance, String contacts) {
+    public TenantModel(UUID id, String name, String buildingNumber, String description, Date rentDueDate, STATUS status, BigDecimal rent, BigDecimal balance, String contacts) {
         this.id = id;
         this.name = name;
         this.buildingNumber = buildingNumber;
@@ -98,19 +82,19 @@ public class TenantModel extends BaseObservable implements Serializable,Cloneabl
         this.contacts = contacts;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public int getEstateId() {
+    public UUID getEstateId() {
         return estateId;
     }
 
-    public void setEstateId(int estateId) {
+    public void setEstateId(UUID estateId) {
         this.estateId = estateId;
     }
 
@@ -164,16 +148,6 @@ public class TenantModel extends BaseObservable implements Serializable,Cloneabl
         notifyPropertyChanged(BR.status);
     }
 
-    public static String[] getStatusItems(){
-        List<String> ret = new ArrayList(STATUS.values().length);
-
-        for(STATUS status : STATUS.values()){
-            ret.add(status.name());
-        }
-
-        return ret.toArray(new String[ret.size()]);
-    }
-
     @Bindable
     public BigDecimal getRent() {
         return rent;
@@ -205,6 +179,16 @@ public class TenantModel extends BaseObservable implements Serializable,Cloneabl
             this.contacts = contacts;
             notifyPropertyChanged(BR.contacts);
         }
+    }
+
+    public static String[] getStatusItems(){
+        List<String> ret = new ArrayList(STATUS.values().length);
+
+        for(STATUS status : STATUS.values()){
+            ret.add(status.name());
+        }
+
+        return ret.toArray(new String[ret.size()]);
     }
 
     @Override

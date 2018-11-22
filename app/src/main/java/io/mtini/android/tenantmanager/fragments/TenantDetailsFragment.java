@@ -1,7 +1,5 @@
 package io.mtini.android.tenantmanager.fragments;
 
-
-
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.databinding.DataBindingUtil;
@@ -12,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import io.mtini.android.tenantmanager.R;
-import io.mtini.android.tenantmanager.dialog.TenantDetailsDialogFragment;
+import io.mtini.android.tenantmanager.dialog.EditTenantDetailsDialogFragment;
 import io.mtini.model.TenantModel;
 import io.mtini.android.tenantmanager.databinding.TenantDetailLayoutBinding;
+
 public class TenantDetailsFragment extends Fragment {
 
+    public static String TAG = Class.class.getSimpleName();
     //public final static String ARG_POSITION = "position";
     public final static String ARG_SELECTED_TENANT = "selectedTenant";
     //int mCurrentPosition = -1;
@@ -50,9 +50,9 @@ public class TenantDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
-                TenantDetailsDialogFragment editNameDialogFragment = new TenantDetailsDialogFragment();
+                EditTenantDetailsDialogFragment editNameDialogFragment = new EditTenantDetailsDialogFragment();
                 Bundle args = new Bundle();
-                args.putSerializable(TenantDetailsDialogFragment.ARG_EDIT_TENANT, editTenant);
+                args.putSerializable(EditTenantDetailsDialogFragment.ARG_EDIT_TENANT, editTenant);
                 editNameDialogFragment.setArguments(args);
                 editNameDialogFragment.show(fm, "fragment_edit_name");
             }
