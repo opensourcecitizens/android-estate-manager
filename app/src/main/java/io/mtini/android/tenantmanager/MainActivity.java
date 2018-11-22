@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
@@ -30,10 +29,6 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Contact us", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 Intent intent = new Intent(MainActivity.this, EstateActivity.class);
-                //intent.putExtra("name", name);
-                //intent.putExtra("description", description);
-                //intent.putExtra("price", price);
-                //intent.putExtra("_id", itemId);
                 startActivity(intent);
             }
         });
@@ -48,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
 
     }
 
