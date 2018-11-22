@@ -3,21 +3,25 @@ package io.mtini.android.tenantmanager.dialog;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import io.mtini.android.tenantmanager.R;
 import io.mtini.android.tenantmanager.databinding.EditTenantDetailLayoutBinding;
 import io.mtini.android.tenantmanager.databinding.TenantDetailLayoutBinding;
 import io.mtini.model.TenantModel;
 
-public class TenantDetailsDialogFragment extends DialogFragment {
+public class EditTenantDetailsDialogFragment extends DialogFragment {
 
+    public static String TAG = Class.class.getSimpleName();
     public interface OnEditTenantListener {
         public void onTenantEdited(TenantModel tenant, TenantModel oldTenant);
     }
@@ -34,7 +38,6 @@ public class TenantDetailsDialogFragment extends DialogFragment {
         if (savedInstanceState != null) {
             currentTenant = (TenantModel)savedInstanceState.getSerializable(ARG_EDIT_TENANT);
         }else if(getArguments()!=null) {
-
             currentTenant = (TenantModel)getArguments().getSerializable(ARG_EDIT_TENANT);
         }
 
@@ -48,22 +51,33 @@ public class TenantDetailsDialogFragment extends DialogFragment {
         updateBtn.setOnClickListener(
                 new View.OnClickListener(){
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
                         final TenantModel oldTenant = currentTenant;
                         EditTenantDetailLayoutBinding binding  = DataBindingUtil.findBinding(v);
                         final TenantModel newTenant = binding.getTenant();
-                        //verify before calling this updateComplete?
-                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+                        //TODO verify before calling this updateComplete?
+                        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
                         dialogBuilder.setMessage(R.string.dialog_changes_message)
                                 .setTitle(R.string.dialog_changes_title);
 
                         dialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // User clicked OK button
-                                updateComplete(newTenant,oldTenant);
+                                ProgressDialog progress = DialogUtils.startProgressDialog(getActivity());
+                                try {
+
+                                    updateComplete(newTenant, oldTenant);
+                                }catch(Throwable e){
+                                    Log.e(TAG,e.getMessage(),e);
+                                    progress.dismiss();
+                                    DialogUtils.startErrorDialog(getActivity(),"An error occurred. '"+e.getLocalizedMessage()+"'" );
+                                    return;
+                                }
+                                progress.dismiss();
                                 dismiss();
                             }
                         });
+
                         dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // User cancelled the dialog
@@ -88,9 +102,7 @@ public class TenantDetailsDialogFragment extends DialogFragment {
                 }
         );
 
-
         return view;
-
     }
 
 
